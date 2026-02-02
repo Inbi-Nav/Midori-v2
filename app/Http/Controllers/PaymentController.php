@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
 use App\Models\Payment;
 
 class PaymentController extends Controller
@@ -22,13 +23,24 @@ class PaymentController extends Controller
     }
 
     public function store(Request $request) {
+        $order= Order::where('id', $request->order_id)
+        ->where('user_id', $request->user()->id)
+        ->first();
+
+        if (!$order) {
+            return response()->json(['message' => 'Pedido no encontrado'], 404);
+        }
         $payments = Payment::create([
-            'order_id' => $request ->order_id, 
-            'amount' => $request -> amount,
-            'payment_method' => $request -> payment_method,
-            'status' => $request -> status
+            'order_id' => $order->id,
+            'amount' => $order->calculateTotal(),
+            'payment_method' => $request->payment_method,
+            'status' => 'paid',
         ]);
-        return response()-> json ($payments, 201);
+        $order->status = 'paid';
+        $order->total_amount = $payments->amount;
+        $order->save();
+
+        return response()->json($payments, 201);
     }
 
     public function update (Request $request, $id) {

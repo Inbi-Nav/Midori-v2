@@ -46,11 +46,6 @@ El proyecto ha sido desarrollado como **proyecto académico**, con énfasis en:
 - Cambio de estado de pedidos
 - Gestión del flujo del pedido
 
-**Credenciales del administrador (demo):**
-
-**Email:** admin@midori.com
-**Contraseña:** midori2026
-
 ---
 
 ## Flujo de uso de la aplicación
@@ -106,4 +101,31 @@ La base de datos sigue un diseño **relacional** y está compuesta por:
  - console.php                 
 
 **storage/**                   
-**tests/**                       
+**tests/**          
+
+## INSTALACION
+
+**1. Clonar el repositorio**
+
+**2. Instalar dependencias PHP**
+- composer install
+
+**4. Instalar dependencias Frontend**
+- npm install
+
+**5. Crear el archivo de entorno**
+- cp .env.example .env
+
+**6. Generar la clave de la aplicación**
+- php artisan key:generate
+
+**7. Vite**
+- npm run dev
+
+**8. Laravel**
+- php artisan serve
+
+**Credenciales del administrador (demo):**
+
+**Email:** admin@midori.com
+**Contraseña:** midori2026
