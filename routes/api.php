@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\AdminController;
 
 
     // AUTH (PUBLIC)
@@ -84,6 +85,9 @@ use App\Http\Controllers\PaymentController;
         ->middleware('auth:api', 'role:admin');
 
     Route::patch('/users/{id}/approve-provider', [UserController::class, 'approveProvider'])
+        ->middleware('role:admin');
+
+    Route::get('/stats', [AdminController::class, 'stats'])
         ->middleware('role:admin');
 });
 
