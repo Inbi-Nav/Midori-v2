@@ -31,15 +31,15 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function esAdmin(): bool {
+    public function isAdmin(): bool {
     return $this->role === 'admin';
     }
 
-    public function esCliente(): bool {
-        return $this->role === 'cliente';
+    public function isClient(): bool {
+        return $this->role === 'client';
     }
 
-   public function esProveedor(): bool {
-        return $this->role === 'proveedor';
+   public function isProvider(): bool {
+        return $this->role === 'provider';
     } 
 }

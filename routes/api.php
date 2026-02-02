@@ -22,46 +22,49 @@ use App\Http\Controllers\PaymentController;
     // LOGOUT 
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    //CLIENTE
+    //CLIENT
 
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
 
     Route::post('/orders', [OrderController::class, 'store'])
-        ->middleware('role:cliente');
+        ->middleware('role:client');
 
     Route::get('/orders/me', [OrderController::class, 'myOrders'])
-        ->middleware('role:cliente');
+        ->middleware('role:client');
 
     Route::post('/payments', [PaymentController::class, 'store'])
-        ->middleware('role:cliente');
+        ->middleware('role:client');
 
     
-    // PROVEEDOR
+    // provider
+
+    Route::post('/users/request-provider', [UserController::class, 'requestProvider'])
+        ->middleware('auth:api', 'role:client');
 
     Route::post('/products', [ProductController::class, 'store'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::put('/products/{id}', [ProductController::class, 'update'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::get('/orders', [OrderController::class, 'index'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::post('/categories', [CategoryController::class, 'store'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::put('/categories/{id}', [CategoryController::class, 'update'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])
-        ->middleware('role:proveedor');
+        ->middleware('role:provider');
 
     // ADMIN
 
@@ -77,6 +80,10 @@ use App\Http\Controllers\PaymentController;
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->middleware('role:admin');
 
-    
+    Route::get('provider-request', [UserController::class, 'providerRequests'])
+        ->middleware('auth:api', 'role:admin');
+
+    Route::patch('/users/{id}/approve-provider', [UserController::class, 'approveProvider'])
+        ->middleware('role:admin');
 });
 

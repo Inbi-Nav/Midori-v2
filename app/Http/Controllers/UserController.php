@@ -46,4 +46,41 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message' => 'usuario eliminado']);
     }
+
+    public function requestProvider(Request $request){
+        $user = $request->user();
+
+        if ($user->role !== 'client') {
+            return response()->json([
+                'message' => 'Solo los clientes pueden solicitar ser proveedor'
+            ], 403);
+        }
+
+        $user->provider_request = true;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Solicitud enviada. Pendiente de aprobación por el admin'
+        ]);
+    }
+
+    public function providerRequests() {
+        $users = User::where('provider_request', true)->get();
+        return response()->json($users);
+    }
+
+    public function approveProvider($id) {
+        $user = User::find($id);
+
+        if (!$user->provider_request) {
+            return response()->json(['message' => 'El usuario no ha solicitado ser proveedor'], 400);
+        }
+
+        $user->role = 'provider';
+        $user->provider_request = false;
+        $user->save();
+
+        return response()->json(['message' => 'Usuario aprobado como proveedor', 'user' => $user]);
+    }
+
 }
