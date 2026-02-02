@@ -27,26 +27,21 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
-        // 1️⃣ Validar datos
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        // 2️⃣ Intentar login
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'message' => 'Credenciales incorrectas'
             ], 401);
         }
 
-        // 3️⃣ Usuario autenticado
         $user = Auth::user();
 
-        // 4️⃣ Crear token con Passport
         $token = $user->createToken('login-token')->accessToken;
 
-        // 5️⃣ Respuesta
         return response()->json([
             'token' => $token,
             'user' => [
