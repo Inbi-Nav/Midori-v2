@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory;
-    
 
     protected $fillable = [
-        'name', 
-        'description', 
+        'name',
+        'description',
         'price',
         'stock',
         'material',
@@ -20,8 +19,8 @@ class Product extends Model
         'image_url',
         'category_id',
     ];
-    
-    public function category() {
+
+    public function category(){
         return $this->belongsTo(Category::class);
-    }   
+    }
 }

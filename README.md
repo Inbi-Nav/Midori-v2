@@ -1,109 +1,113 @@
-# Midori
-Midori es una aplicación **e-commerce** desarrollada con **PhP/Laravel-Blade/Tailwind**, inspirada a cultutra japonesa.  
-El proyecto simula una tienda online completa, con gestión de usuarios, pedidos, pagos simulados y un panel de administración.
+# REST API – Sistema de Gestión E-commerce
+---
+Esta API REST implementa un sistema de gestión para Midori con control de usuarios, productos, pedidos y pagos, utilizando autenticación basada en **tokens Bearer**.
+
+
+## Requisitos
+
+- PHP - 8.2
+- Composer
+- Laravel 12
+- Laravel Passport
+---
+##  Cómo iniciar el proyecto
+
+- Clonar el repositorio:
+  - git clone **url-repo**
+  - composer install
+  - cp .env.example .env
+  - php artisan key:generate
+  - php artisan serve
+
+---
+## Credenciales de administrador 
+ - **email**: admin@midori.com
+ - **password**: admin123
+
+ ## Registro
+- Al registrarse por primera vez, el usuario obtiene el rol client por defecto.
+  - **POST - /api/register**
+- Campos obligatorios 
+  - **name, email, password** 
+
+  ## Login
+- Una vez registrado correctamente, el usuario puede autenticarse. 
+    - **POST - /api/login**
+ - credenciales 
+    - **email, password** 
+
+ ## Roles del sistema
+La API maneja tres tipos de usuarios:
+
+ **CLIENTE** - usuario final que compra productos
+
+ Puede:
+  - Ver productos
+  - Crear pedidos
+  - Realizar pagos
+  - Consultar sus pedidos
+  - Solicitar convertirse en proveedor
 
 ---
 
-## Descripción del proyecto
+**PROVEEDOR** - Responsable de gestionar productos y pedidos
 
-**Midori** permite a los usuarios registrarse, explorar un productos, añadirlos a una cesta, realizar pedidos y consultar su historial de compras.  
-Los administradores pueden gestionar pedidos y actualizar su estado a lo largo del proceso de compra.
+Puede:
+- Crear, modificar y eliminar productos
+- crear y gestionar categorias
+- Consultar pedidos
+- Cambiar el estado de los pedidos
 
-El proyecto ha sido desarrollado como **proyecto académico**, con énfasis en:
-- Arquitectura MVC
-- Diseño relacional de base de datos
-- Experiencia de usuario (UI/UX)
-
----
-
-## Tecnologías y herramientas utilizadas
-
-- **PHP**
-- **Laravel**
-- **MySQL**
-- **Blade Templates**
-- **Tailwind CSS**
-- **Vite**
-- **Livewire (cesta)**
-- **Thunder Client (testing API)**
+El proveedor no se crea directamente. Debe ser aprobado por el administrador.
 
 ---
 
-### Usuario estándar
+**ADMIN** - Usuario con privilegios de supervision
 
-- Registro e inicio de sesión
-- Navegación por el catálogo
-- Añadir productos a la cesta
-- Realizar pedidos (pago simulado)
-- Ver historial de pedidos
-- Consultar estado del pedido (pending → shipped → delivered)
-- Cancelar pedidos mientras estén en estado `pending` o `paid`
+Puede:
 
-### Administrador
+- Ver todos los usuarios registrado
+- Abrobar solicitud de proveedores
+- Gestionar usuarios
+- Consultar estadisticas generales de sistema
 
-- Acceso a panel de administración
-- Visualización de todos los pedidos
-- Cambio de estado de pedidos
-- Gestión del flujo del pedido
+## Solicitar convertirse en proveedor
 
-**Credenciales del administrador (demo):**
+1. El cliente envía la solicitud:
+ - POST /api/users/request-provider
+2. El administrador consulta las solicitudes:
+- GET /api/provider-request
+3. El administrador aprueba la solicitud:
+- PATCH /api/users/{id}/approve-provider 
 
-**Email:** admin@midori.com
-**Contraseña:** midori2026
+## Endpoints de productos
+- GET /api/products
+- GET /api/products/{id}
+- POST /api/products - (proveedor)
+- PUT /api/products/{id} - (proveedor)
+- DELETE /api/products/{id} - (proveedor)
 
----
+## Endpoints de pedidos
+- POST /api/orders - (cliente)
+- GET /api/orders/me - (cliente)
+- GET /api/orders - (proveedor)
+- PATCH /api/orders/{id}/status - (proveedor)
 
-## Flujo de uso de la aplicación
+## Endpoints de pago
+- POST /api/payments - (cliente)
 
-1. El usuario se registra e inicia sesión.
-2. Accede a la tienda y explora productos por categorías.
-3. Añade productos a la cesta.
-4. Finaliza la compra mediante un pago simulado.
-5. Se crea un pedido con sus productos asociados.
-6. El usuario visualiza el pedido en *My Orders*.
-7. El administrador gestiona el estado del pedido.
+## Endpoints de administrador
+- GET /api/users 
+- GET /api/users/{id}
+- PUT /api/users/{id}
+- DELETE /api/users/{id}
+- GET /api/provider-request
+- PATCH /api/users/{id}/approve-request
 
----
+## SEGURIDAD
+- Todas las rutas protegidas usan auth:api
+- El acceso se restringe por rol mediante middleware
+- La autenticación se basa en **Bearer Tokens**
+- Sin token -> 401
+- Token sin permisos -> 403 
 
-## Base de datos
-
-La base de datos sigue un diseño **relacional** y está compuesta por:
-
-- **users** → Usuarios (cliente / admin)
-- **categories** → Categorías de productos
-- **products** → Productos disponibles
-- **orders** → Pedidos
-- **order_items** → Productos incluidos en cada pedido
-- **payments** → Pagos simulados
-
----
-
-## Estructura del proyecto
-
-**app/**
-  - Http/
-   --  Controllers/          
- - Models/                   
- - Providers/               
-
-**config/**                 
-
- **database/**
- -  migrations/              
- -  seeders/                 
-
- **public/**
-  - index.php                   
-  - .htaccess                   
-  - assets/                  
-**resources/**
- - views/                   
- - css/                     
-
-**routes/**
- - web.php                     
- - api.php                      
- - console.php                 
-
-**storage/**                   
-**tests/**                       

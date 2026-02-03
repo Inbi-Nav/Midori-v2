@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::all();
-        return response()->json($users);
+    public function index() {
+        return response()->json(User::all());
     }
 
     public function show($id) {
@@ -22,36 +20,67 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function store(Request $request) {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'phone' => $request->phone,
-            'role' => 'user'
-        ]);
-        return response()->json($user, 201);
-    }
-
     public function update(Request $request, $id) {
         $user = User::find($id);
-        if ($user) {
-            $user->update($request->all());
-            return response()->json($user);
-        } else {
-            return response()->json(['message'=>"usuario no encontrado"], 404);
-        }
 
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+        $user->update($request->only([
+            'name',
+            'email',
+            'role'
+        ]));
+
+        return response()->json($user);
     }
+
     
     public function destroy($id) {
         $user = User::find($id);
-        if ($user) {
+
+        if (!$user) {
+        return response()->json(['message' => 'usuario no encontrado'], 404);
+        } 
+
         $user->delete();
         return response()->json(['message' => 'usuario eliminado']);
-        } else  {
-        return response()->json(['message' => 'usuario no encontrado'], 404);
-        }
     }
+
+    public function requestProvider(Request $request){
+        $user = $request->user();
+
+        if ($user->role !== 'client') {
+            return response()->json([
+                'message' => 'Solo los clientes pueden solicitar ser proveedor'
+            ], 403);
+        }
+
+        $user->provider_request = true;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Solicitud enviada. Pendiente de aprobación por el admin'
+        ]);
+    }
+
+    public function providerRequests() {
+        $users = User::where('provider_request', true)->get();
+        return response()->json($users);
+    }
+
+    public function approveProvider($id) {
+        $user = User::find($id);
+
+        if (!$user->provider_request) {
+            return response()->json(['message' => 'El usuario no ha solicitado ser proveedor'], 400);
+        }
+
+        $user->role = 'provider';
+        $user->provider_request = false;
+        $user->save();
+
+        return response()->json(['message' => 'Usuario aprobado como proveedor', 'user' => $user]);
+    }
+
 }
-?>
