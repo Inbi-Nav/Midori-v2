@@ -9,21 +9,12 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AdminController;
 
-
-    // AUTH (PUBLIC)
-
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
 
-
-    // AUTHENTICATED ROUTES
-
     Route::middleware('auth:api')->group(function () {
-
-    // LOGOUT 
+  
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    //CLIENT
 
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
@@ -38,8 +29,6 @@ use App\Http\Controllers\AdminController;
         ->middleware('role:client');
 
     
-    // provider
-
     Route::post('/users/request-provider', [UserController::class, 'requestProvider'])
         ->middleware('auth:api', 'role:client');
 
@@ -67,7 +56,6 @@ use App\Http\Controllers\AdminController;
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])
         ->middleware('role:provider');
 
-    // ADMIN
 
     Route::get('/users', [UserController::class, 'index'])
         ->middleware('role:admin');
