@@ -25,7 +25,7 @@ Esta API REST implementa un sistema de gestión para Midori con control de usuar
  - **password**: admin123
 
  ## Registro
-- Al registrarse por primera vez, el usuario obtiene el rol client por defecto.
+Al registrarse por primera vez, el usuario obtiene el rol CLIENT por defecto.
   - **POST - /api/register**
 - Campos obligatorios 
   - **name, email, password** 
@@ -54,7 +54,7 @@ La API maneja tres tipos de usuarios:
 
 Puede:
 - Crear, modificar y eliminar productos
-- crear y gestionar categorias
+- Crear y gestionar categorías
 - Consultar pedidos
 - Cambiar el estado de los pedidos
 
@@ -66,10 +66,10 @@ El proveedor no se crea directamente. Debe ser aprobado por el administrador.
 
 Puede:
 
-- Ver todos los usuarios registrado
-- Abrobar solicitud de proveedores
+- Ver todos los usuarios registrados
+- Aprobar solicitudes de proveedores
+- Consultar estadísticas generales del sistema
 - Gestionar usuarios
-- Consultar estadisticas generales de sistema
 
 ## Solicitar convertirse en proveedor
 
@@ -111,3 +111,15 @@ Puede:
 - Sin token -> 401
 - Token sin permisos -> 403 
 
+## API Documentation
+
+La documentación completa de la API está disponible mediante Laravel Scribe:
+
+http://localhost:8000/docs
+
+Incluye:
+  - Endpoints
+  - Métodos HTTP
+  - Parámetros
+  - Autenticación
+  - Ejemplos de respuesta
