@@ -5,7 +5,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     container_name: midori_app
     volumes:
       - .:/var/www
@@ -25,8 +25,6 @@ services:
       MYSQL_DATABASE: midori
       MYSQL_USER: midori
       MYSQL_PASSWORD: midori
-    ports:
-      - "3306:3306"
     networks:
       - midori_network
 

@@ -19,6 +19,7 @@ Esta API REST implementa un sistema de gestión para Midori con control de usuar
   - php artisan key:generate
   - php artisan migrate:fresh --seed
   - php artisan passport:install
+  - php artisan passport:client --personal
   - php artisan serve 
 
 ---
