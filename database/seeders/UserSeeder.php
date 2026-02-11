@@ -21,6 +21,5 @@ class UserSeeder extends Seeder
             'password' => Hash::make('midori2026'),
             'email_verified_at' => now(),
         ]);
-
     }
 }

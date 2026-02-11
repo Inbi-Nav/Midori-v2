@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: midori_app
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    networks:
+      - midori_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: midori_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: midori
+      MYSQL_USER: midori
+      MYSQL_PASSWORD: midori
+    ports:
+      - "3306:3306"
+    networks:
+      - midori_network
+
+networks:
+  midori_network:
