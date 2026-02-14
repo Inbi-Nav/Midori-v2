@@ -17,6 +17,7 @@ return new class extends Migration
         $table->string('role')->default('client'); 
         $table->boolean('provider_request')->default(false);
         $table->string('password');
+        // $table->boolean('provider_request')->default(false);
         $table->rememberToken();
         $table->timestamps();
         });
