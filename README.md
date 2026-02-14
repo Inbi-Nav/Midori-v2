@@ -1,26 +1,48 @@
-# REST API – Sistema de Gestión E-commerce
----
-Esta API REST implementa un sistema de gestión para Midori con control de usuarios, productos, pedidos y pagos, utilizando autenticación basada en **tokens Bearer**.
+# REST API – Sistema de Gestión E-commerce (Midori)
+Esta API REST implementa un sistema de gestión para Midori con control de
+  - usuarios 
+  - productos
+  - pedidos
+  - pagos
 
+La autenticación se realiza mediante Bearer Tokens (OAuth2).
 
 ## Requisitos
 
 - PHP - 8.2
 - Composer
 - Laravel 12
+- SQLite 
 - Laravel Passport
 ---
 ##  Cómo iniciar el proyecto
 
-- Clonar el repositorio:
+  - Clonar el repositorio:
   - git clone **url-repo**
+  - cd Midori-v2
   - composer install
   - cp .env.example .env
   - php artisan key:generate
+  - touch database/database.sqlite
   - php artisan migrate:fresh --seed
   - php artisan passport:install
   - php artisan passport:client --personal
   - php artisan serve 
+
+## Ejecutar los test:
+- php artisan test
+
+Incluye tests funcionales para:
+
+  - Autenticación
+
+  - Roles
+
+  - Productos
+
+  - Pedidos
+
+  - Administración
 
 ---
 ## Credenciales de administrador 
@@ -42,7 +64,7 @@ Al registrarse por primera vez, el usuario obtiene el rol CLIENT por defecto.
  ## Roles del sistema
 La API maneja tres tipos de usuarios:
 
- **CLIENTE** - usuario final que compra productos
+ **CLIENTE**
 
  Puede:
   - Ver productos
@@ -56,8 +78,8 @@ La API maneja tres tipos de usuarios:
 **PROVEEDOR** - Responsable de gestionar productos y pedidos
 
 Puede:
-- Crear, modificar y eliminar productos
-- Crear y gestionar categorías
+- Crear / modificar / eliminar productos
+- Gestionar categorías
 - Consultar pedidos
 - Cambiar el estado de los pedidos
 
@@ -69,9 +91,9 @@ El proveedor no se crea directamente. Debe ser aprobado por el administrador.
 
 Puede:
 
-- Ver todos los usuarios registrados
+- Supervisar sistema
 - Aprobar solicitudes de proveedores
-- Consultar estadísticas generales del sistema
+- Consultar estadísticas 
 - Gestionar usuarios
 
 ## Solicitar convertirse en proveedor
