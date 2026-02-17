@@ -23,7 +23,7 @@ La autenticación se realiza mediante Bearer Tokens (OAuth2).
   - composer install
   - cp .env.example .env
   - php artisan key:generate
-  - touch database/database.sqlite
+  - CREATE DATABASE midori
   - php artisan migrate:fresh --seed
   - php artisan passport:install
   - php artisan passport:client --personal
