@@ -23,12 +23,37 @@ La autenticación se realiza mediante Bearer Tokens (OAuth2).
   - composer install
   - cp .env.example .env
   - php artisan key:generate
-  - CREATE DATABASE midori
+  - CREATE DATABASE midori o New-Item database/database.sqlite -ItemType File
   - php artisan migrate:fresh --seed
-  - php artisan passport:keys
+  <!-- - php artisan passport:keys -->
   - php artisan passport:install
   - php artisan passport:client --personal
   - php artisan serve 
+
+## HTTP HEADERS
+- Accept: application/json
+- Content-Type: application/json
+
+
+# Ejecutar proyecto con Docker
+
+## Requisitos
+- Docker 
+- Docker Compose 
+(No es necesario instalar PHP ni Composer en tu máquina)
+
+En caso de error de permisos
+- app chmod 600 storage/oauth-public.key
+
+##  Cómo iniciar el proyecto
+
+- git clone url-repo
+- docker compose build
+- docker compose up 
+
+Aplicación Laravel (puerto 8000)
+
+MySQL 8 
 
 ## Ejecutar los test:
 - php artisan test
