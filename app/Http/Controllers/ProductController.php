@@ -39,7 +39,6 @@ class ProductController extends Controller
             $filename = time() . '_' . $image->getClientOriginalName();
 
             $image->move(public_path('images/products'), $filename);
-
             $imagePath = '/images/products/' . $filename;
         }
 
