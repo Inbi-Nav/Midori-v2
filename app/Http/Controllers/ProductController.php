@@ -72,9 +72,9 @@ class ProductController extends Controller
 
             $filename = time() . '_' . $image->getClientOriginalName();
 
-            $image->move(public_path('imagesproducts'), $filename);
+            $image->move(public_path('images/products'), $filename);
 
-            $imagePath = '/imagesproducts/' . $filename;
+            $imagePath = '/images/products/' . $filename;
         }
 
         $product->update([
