@@ -23,41 +23,73 @@ class ProductController extends Controller
         }
     }
 
-    public function store(Request $request) {
-        $product = Product::create($request->only([
-            'name',
-            'description',
-            'price',
-            'stock',
-            'material',
-            'color',
-            'image_url',
-            'category_id',
-        ]));
+   public function store(Request $request){
+        $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+            $filename = time() . '_' . $image->getClientOriginalName();
+
+            $image->move(public_path('imagesproducts'), $filename);
+
+            $imagePath = '/imagesproducts/' . $filename;
+        }
+
+        $product = Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'material' => $request->material,
+            'color' => $request->color,
+            'category_id' => $request->category_id,
+            'image_url' => $imagePath,
+        ]);
 
         return response()->json($product, 201);
     }
 
 
-    public function update (Request $request, $id) {
-
+   public function update(Request $request, $id){
         $product = Product::find($id);
 
         if (!$product) {
-            return response() ->json (['message' => 'Producto no encontrado'], 404);
+            return response()->json(['message' => 'Producto no encontrado'], 404);
         }
-            $product -> update ($request->only([
-            'name',
-            'description',
-            'price',
-            'stock',
-            'material',
-            'color',
-            'image_url',
 
-        ]));
-        return response()-> json ($product);
-    }
+        $imagePath = $product->image_url;
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+            $filename = time() . '_' . $image->getClientOriginalName();
+
+            $image->move(public_path('imagesproducts'), $filename);
+
+            $imagePath = '/imagesproducts/' . $filename;
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'material' => $request->material,
+            'color' => $request->color,
+            'image_url' => $imagePath,
+        ]);
+
+        return response()->json($product);
+    }       
 
     public function destroy ($id) {
         $product = Product::find($id);
